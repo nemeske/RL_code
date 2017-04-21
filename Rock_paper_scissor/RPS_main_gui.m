@@ -61,6 +61,8 @@ guidata(hObject, handles);
 
 % UIWAIT makes RPS_main_gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
+clear;
+clear rps_ai_alg % clearing persistent variables
 global win_arr
 global player_sel
 win_arr = [];
@@ -216,7 +218,7 @@ alg = get(handles.ai_alg,'Value');
 % 3 -> Last winner
 % 4 -> Extra
 global win_arr
-ai_sel = rps_ai_alg(player_sel,alg);
+ai_sel = rps_ai_alg(player_sel,alg,0);
 wins = rps_winner(player_sel,ai_sel);
 win_arr = [win_arr wins];
 player_wins = sum(win_arr == 1);

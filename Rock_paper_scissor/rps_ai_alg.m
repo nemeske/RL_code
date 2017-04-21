@@ -19,7 +19,7 @@ end
 
 persistent player_arr % the array of player moves
 player_arr = [player_arr player_sel]; % Short term
-
+r_mat = [0 1 -1;-1 0 1;1 -1 0];
 % Extra long term: only if a human is playing
 if isai == 0
     if mod(length(player_arr),10) == 0 && length(player_arr) ~= 0
@@ -60,10 +60,33 @@ switch alg
         else
             ai_sel = beats(player_arr(end-1)); 
         end
-            
+    case 4 
+        % EXTRA, te most ultiamte algorithm known to humans
+        persistent results
+        if length(player_arr) == 1
+            ai_sel = 2;
+            results = -1;
+        else
+            circ = mod(sum(results == 1),20);
+            % long and ugly if-else :(
+            if (0 <= circ) && (circ < 5)
+                ai_sel = beats(player_arr(end-1));
+            else
+                if (5 <= circ) && (circ < 10)
+                    n = 5;
+                    ai_sel = beats(mode(player_arr(end-n:end-1)));
+                else
+                    if (10 <= circ) && (circ < 15)
+                        ai_sel = mod(length(player_arr),3)+1;
+                    else
+                        ai_sel = randi(3);
+                    end
+                end
+            end
+        end       
+        results = [results r_mat(ai_sel,player_sel)];
+        % 1 if the player wins            
 end
-
-
 end
 
 
