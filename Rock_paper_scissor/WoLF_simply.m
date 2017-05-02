@@ -5,7 +5,7 @@ if nargin == 0
     delta_w = 0.01;
     epsilon = 0.1;
 end
-
+%%%%%%%% BINARY WOLF
 gamma = 0.2;
 % Init
 
@@ -13,8 +13,6 @@ Q = zeros(3);
 pol =ones(3,3)* 1/3; % the probalility of choosing something (policy)
 C = zeros(1,3); % observing the enemy
 N = 10000; % Number of runs
-pol_h = pol;
-
 r_mat = [0 1 -1;-1 0 1;1 -1 0];
 
 action = randi(3);
@@ -41,19 +39,7 @@ for jj = 1:N
     Q(state,action) = (1-alpha)* Q(state,action)+ ...
                     alpha*(reward +  disc); % abolutely short sighted
     C(state) = C(state) + 1;
-    
-    for ii = 1:3
-        pol_h(state,ii) = pol_h(state,ii) + 1/C(state)*(pol(state,ii)-pol_h(state,ii));
-    end
-    % pol_h(state,action) = pol_h(state,action) + 1/C(state)*(pol(state,action)-pol_h(state,action));
-
-    P1 = 0;
-    P2 = 0;
-    for ii = 1:3
-        P1 = P1 + pol(state,ii)*Q(state,ii);
-        P2 = P2 + pol_h(state,ii)*Q(state,ii);
-    end
-    if P1>=P2
+    if reward == 1
         Delta = delta_w;
     else
         Delta = delta_l;
@@ -67,8 +53,8 @@ for jj = 1:N
     pol(state,action) = pol(state,action)+DD;
     
     state = action;
-    action = next_action;
     ai_ans = rps_ai_alg(action,3,1);
+    action = next_action;
     
     prev(jj+1,1:3) = [action,ai_ans,r_mat(ai_ans,action)];
     
