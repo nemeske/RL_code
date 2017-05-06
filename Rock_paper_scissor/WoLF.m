@@ -64,11 +64,10 @@ for jj = 1:N
     else
         DD = -Delta/2;
     end
-    pol(state,action) = pol(state,action)+DD;
     
     state = action;
     action = next_action;
-    ai_ans = rps_ai_alg(action,3,1);
+    ai_ans = rps_ai_alg(action,2,1);
     
     prev(jj+1,1:3) = [action,ai_ans,r_mat(ai_ans,action)];
     

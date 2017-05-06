@@ -1,14 +1,13 @@
-function graWoLF
+function graWoLF2
 
 % Parameters
-alpha = 0.001;
+alpha = 0.1;
 delta_l = 0.2;
 delta_w = 0.1;
 epsilon = 0.1;
 beta = 0.2;
 w = zeros(3,3,2);
-theta = zeros(2,1);
-theta_h = zeros(3);
+theta = zeros(3,1);
 e = zeros(3,3,2);
 gamma = 0.2;
 
@@ -19,10 +18,7 @@ ai_ans = rps_ai_alg(action,3,1);
 state = action;
 prev(1,1:2) = [action,ai_ans];
 t = 0;
-% phi_sa = [1 1 1;2 2 2;3 3 3];
-phi = zeros(3,3,2);
-phi(:,:,1) = [2 1 1;2 1 1;2 1 1];
-phi(:,:,2) = [3 3 2;3 3 2;3 3 2];
+phi = [1 1 1;2 2 2;3 3 3];
 
 % Init
 pol = zeros(3);
@@ -53,7 +49,7 @@ for t = 0:N-1
     end
     
     % ----------------------------------- Next action
-    if t < 100
+    if jj < 10
         next_action = randi(3);
     else
         if rand() < epsilon 
@@ -76,7 +72,7 @@ for t = 0:N-1
     end
     
     theta(1) = theta(1) + gamma^t*Delta * e(state,action,1) * pol(state,action)*Q(state,action);
-    theta(2) = theta(2) + gamma^t*Delta * e(state,action,2) * pol(state,action)*Q(state,action);     
+    theta(2) = theta(2) + gamma^t*Delta * e(state,action,2) * pol(state,action)*Q(state,action); 
     
     state = action;
     ai_ans = rps_ai_alg(action,3,1);
@@ -84,5 +80,4 @@ for t = 0:N-1
     
     prev(t+1,1:3) = [action,ai_ans,r_mat(ai_ans,action)];
 end
-figure();plot(cumsum(prev(:,3)))
 pol
